@@ -261,9 +261,26 @@
 
 .category-list {
   margin-left: 0;
+  margin-bottom: 30px;
 }
 
 .category-item {
   display: inline-table;
   margin: 0 15px 0 0;
+}
+
+.category-but {
+  background-color: #e7e7e7;
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.all-but {
+  background-color: #555555;
+  color: #ffffff;
 }

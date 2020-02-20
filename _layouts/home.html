@@ -6,17 +6,17 @@ layout: default
 
   {{ content }}
 
-<!--   <ul class="category-list">
+  <ul class="category-list">
+      <div class="category-item"><button class="category-but all-but" onclick="show_all()" value="all">所有 {{ site.posts | size }}</button></div>
       {% for category in site.categories %}
-      <div class="category-item"><a href="/categories/{{ category | first }}/" title="view all
-  posts">{{ category | first }} {{ category | last | size }}</a></div>
+      <div class="category-item"><button class="category-but" onclick="show_and_hide(this)" value="{{ category | first }}">{{ category | first }} {{ category | last | size }}</button></div>
       {% endfor %}
-  </ul> -->
+  </ul>
 
   {%- if site.posts.size > 0 -%}
     <ul class="post-list">
       {%- for post in site.posts -%}
-      <li>
+      <li class="post-card" id="{{ post.category }}">
         <h3>
           <a class="post-link" href="{{ post.url | relative_url }}">
             {{ post.title | escape }}
@@ -31,5 +31,9 @@ layout: default
       {%- endfor -%}
     </ul>
   {%- endif -%}
+
+  <script>
+    {%- include button.js -%}
+  </script>
 
 </div>
