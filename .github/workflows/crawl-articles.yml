@@ -1,5 +1,6 @@
 name: Crawl Articles
 on: 
+  push:
   schedule:
     - cron: '0 0 * * *'
 jobs:
@@ -8,6 +9,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+
+    - name: Setup RSSHub
+      run: |
+        docker pull diygod/rsshub
+        docker run -d --name rsshub -p 1200:1200 diygod/rsshub
 
     - name: Setup Python
       uses: actions/setup-python@v1
