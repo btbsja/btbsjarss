@@ -3,9 +3,12 @@
 
 import os
 import time
+import socket
 import hashlib
 import feedparser
 from bs4 import BeautifulSoup
+
+socket.setdefaulttimeout(60)
 
 class Spider(object):
 	def __init__(self, cat, title, url):
@@ -14,10 +17,15 @@ class Spider(object):
 		self.title = title
 		self.url = url
 		self.parse_url()
-		print('Crawling', self.title)
 		
 	def parse_url(self):
 		self.src = feedparser.parse(self.url)
+
+	def get_parse_status(self):
+		if hasattr(self.src, 'status'):
+			return self.src.status
+		else:
+			return 0
 
 	def get_feed_title(self):
 		return self.title
@@ -26,7 +34,9 @@ class Spider(object):
 		return self.cat;
 
 	def get_article_title(self, idx):
-		return self.src.entries[idx].title
+		title = self.src.entries[idx].title
+		title = self.clean_text(title)
+		return title
 
 	def get_article_link(self, idx):
 		return self.src.entries[idx].link
@@ -36,24 +46,34 @@ class Spider(object):
 		return time.strftime("%Y-%m-%d %H:%M:%S", date_parsed)
 
 	def get_article_description(self, idx):
-		description = self.src.entries[idx].summary.replace('\n', ' ')
+		description = self.src.entries[idx].summary
+		description = self.clean_text(description).replace('\n', ' ')
 		raw_description = BeautifulSoup(description, 'lxml').get_text()
 		if len(raw_description) >= 150:
 			raw_description = raw_description[:150]
-		return raw_description.replace(':', ' ')
+		return raw_description
 
 	def get_article_content(self, idx):
 		content = ''
 		if 'content' in self.src.entries[idx]:
 			content = self.src.entries[idx].content[0].value
 		else:
-			content = self.src.entries[idx].summary.replace('\n', ' ')
+			content = self.src.entries[idx].summary
 		return content
 
-	def clean_html(self, html):
-		html = html.replace('\n', ' ')
-		html = html.replace(':', ' ')
-		html = html.replace('https//', 'https://')
+	def clean_text(self, text):
+		spec_list_1 = ['`', '!', '@', '#', '%', '&', '*', '|', \
+					   '{', '}', '[', ']', '\"', '\'', ',']
+		spec_list_2 = [':']
+		new_text = ''
+		for idx in range(len(text)):
+			if text[idx] in spec_list_1:
+				new_text += ' '
+			elif text[idx] in spec_list_2:
+				new_text += ' -'
+			else:
+				new_text += text[idx]
+		return new_text
 
 	def write_html(self, idx, target_folder):
 		target_name = self.get_article_date(idx).split()[0] + '-' + \
@@ -81,12 +101,24 @@ class Spider(object):
 
 def main():
 	cat = '新兴媒体'
-	source = '虎嗅网'
-	rss_url = 'https://www.huxiu.com/rss/0.xml'
+	source = '爱范儿'
+	rss_url = 'https://www.ifanr.com/feed'
 	target_folder = './_posts/'
 
+	cat = '英文媒体'
+	source = 'BBC News - World'
+	rss_url = 'https://rsshub.app/bbc/world'
+	target_folder = './_posts/'
+
+	print('Crawling', source, end=' -> ')
 	spider = Spider(cat, source, rss_url)
-	spider.write_htmls(target_folder)
+	if spider.get_parse_status() == 0:
+		print('Timeout')
+	elif spider.get_parse_status() != 200:
+		print('Failure')
+	else:
+		print('Success')
+		spider.write_htmls(target_folder)
 
 if __name__ == '__main__':
 	main()

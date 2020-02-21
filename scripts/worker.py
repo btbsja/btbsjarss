@@ -24,8 +24,15 @@ class Worker(object):
 		os.mkdir(target_folder)
 		for cat in self.subs:
 			for title in self.subs[cat]:
+				print('Crawling', title, end=' -> ')
 				spider = Spider(cat, title, self.subs[cat][title])
-				spider.write_htmls(target_folder)
+				if spider.get_parse_status() == 0:
+					print('Timeout')
+				elif spider.get_parse_status() != 200:
+					print('Failure')
+				else:
+					print('Success')
+					spider.write_htmls(target_folder)
 
 def main():
 	subs_path = './scripts/subscribe.json'
