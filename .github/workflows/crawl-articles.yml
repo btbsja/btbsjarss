@@ -2,7 +2,7 @@ name: Crawl Articles
 on: 
   push:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0,4,14 * * *'
 jobs:
   crawl:
     runs-on: ubuntu-latest
@@ -31,8 +31,8 @@ jobs:
 
     - name: Commit files
       run: |
-        git config --local user.email "zhaozengzhi1995@163.com"
-        git config --local user.name "ProgramCZ"
+        git config --local user.email "1766675205@qq.com"
+        git config --local user.name "Btbsja"
         git add -A
         git commit -m "Update Articles"
 

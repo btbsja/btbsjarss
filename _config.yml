@@ -18,14 +18,14 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: ProgramCZ's RSSub
+title: Btbsja's RSSub
 email:
 description: >- # this means to ignore newlines until "baseurl:"
   RSSub is a RSS subscriber driven by Jekyll and GitHub Pages.
 baseurl: "/rssub" # the subpath of your site, e.g. /blog
-url: "https://programcz.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://github.com/btbsja/btbsjarss" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username:
-github_username:  ProgramCZ
+github_username:  btbsja
 
 # Build settings
 theme: minima
@@ -35,7 +35,7 @@ plugins:
 # More info
 timezone: Asia/Shanghai
 footer_description: >-
-  <a href="https://github.com/ProgramCZ/RSSub" target="_blank">RSSub</a> is a RSS subscriber driven by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> and <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+  <a href="https://github.com/btbsja/btbsjarss" target="_blank">RSSub</a> is a RSS subscriber driven by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> and <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
 
 # Exclude from processing.
 # The following items will not be processed, by default.
